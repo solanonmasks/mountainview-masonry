@@ -1,0 +1,38 @@
+---
+// Navy section aimed at general contractors.
+import { Image } from 'astro:assets';
+import { POINTS, photos } from '../site';
+---
+
+<section id="trade" class="bg-navy text-white">
+  <div class="grid lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
+    <div class="relative min-h-[360px] overflow-hidden lg:min-h-0">
+      <Image
+        src={photos.firewall}
+        alt="CMU firewall in a multi-storey wood-frame building"
+        widths={[600, 900, 1200]}
+        sizes="(min-width: 1000px) 45vw, 100vw"
+        class="absolute inset-0 block h-full w-full object-cover object-[center_35%]"
+      />
+    </div>
+    <div class="edge-pr flex flex-col justify-center gap-6 py-[clamp(64px,8vw,128px)] pl-[clamp(18px,4vw,72px)]">
+      <h2 data-reveal class="m-0 font-display text-[clamp(38px,4.4vw,70px)] leading-none font-extrabold tracking-[-0.03em] text-balance">
+        A masonry sub you can count on.
+      </h2>
+      <p data-reveal class="m-0 max-w-[32em] text-[19px] text-on-navy">
+        We’re looking to connect with general contractors, builders, developers and project managers who need reliable, quality
+        masonry subcontractors for upcoming projects.
+      </p>
+      <div class="mt-3 grid grid-cols-[repeat(auto-fit,minmax(min(100%,240px),1fr))] gap-x-9 gap-y-7">
+        {
+          POINTS.map((p) => (
+            <div data-reveal class="flex flex-col gap-2 border-l-[3px] border-brick pl-[18px]">
+              <h3 class="m-0 font-display text-[22px] leading-[1.15] font-bold">{p.t}</h3>
+              <p class="m-0 text-[17px] text-on-navy">{p.d}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>

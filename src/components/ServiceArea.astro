@@ -1,0 +1,16 @@
+---
+import { AREAS } from '../site';
+---
+
+<section class="bg-brick text-white">
+  <div class="wrap grid items-center gap-x-20 gap-y-7 py-[clamp(64px,8vw,110px)] lg:grid-cols-2">
+    <div data-reveal class="flex flex-col gap-3.5">
+      <h2 class="m-0 font-display text-[clamp(34px,3.8vw,60px)] leading-none font-extrabold tracking-[-0.03em]">
+        Based in Mission. Working across the Lower Mainland and Fraser Valley.
+      </h2>
+    </div>
+    <p data-reveal class="m-0 font-display text-[clamp(20px,1.8vw,26px)] leading-normal font-semibold text-[#FBE3DA]">
+      {AREAS.join('  ·  ')}
+    </p>
+  </div>
+</section>

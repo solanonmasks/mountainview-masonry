@@ -1,0 +1,56 @@
+---
+// "What we build": Brick / Block / Stone cards plus the repairs panel.
+import { Image } from 'astro:assets';
+import { TRADES, photos } from '../site';
+---
+
+<section id="build" class="wrap section-y">
+  <div data-reveal class="mb-[clamp(40px,5vw,64px)] grid items-end gap-x-20 gap-y-5 lg:grid-cols-2">
+    <h2 class="h-section">What we build</h2>
+    <p class="m-0 max-w-[30em] text-[19px] text-ink-3">Three trades under one crew. Residential and commercial, new builds and renovations.</p>
+  </div>
+
+  <div class="grid gap-[clamp(20px,2.4vw,36px)] md:grid-cols-2 lg:grid-cols-3">
+    {
+      TRADES.map((t) => (
+        <article data-reveal class="group flex flex-col gap-5">
+          <div class="aspect-[4/5] overflow-hidden bg-line">
+            <Image
+              src={t.img}
+              alt={t.t}
+              widths={[400, 600, 900]}
+              sizes="(min-width: 1000px) 33vw, (min-width: 700px) 50vw, 100vw"
+              style={`object-position:${t.pos}`}
+              class="block h-full w-full object-cover transition-transform duration-[1200ms] ease-mv group-hover:scale-105"
+            />
+          </div>
+          <div class="flex flex-col gap-2.5">
+            <span class="text-[15px] font-bold text-brick">{t.k}</span>
+            <h3 class="m-0 font-display text-[clamp(26px,2.2vw,34px)] leading-[1.05] font-extrabold tracking-[-0.02em]">{t.t}</h3>
+            <ul class="mt-1.5 flex list-disc flex-col gap-1 pl-5 text-[17px] text-ink-2">
+              {t.items.map((i) => <li>{i}</li>)}
+            </ul>
+          </div>
+        </article>
+      ))
+    }
+  </div>
+
+  <div data-reveal class="mt-[clamp(28px,3vw,44px)] grid bg-charcoal text-white md:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)]">
+    <div class="aspect-[16/10] overflow-hidden md:aspect-auto">
+      <Image
+        src={photos.stackedStone}
+        alt="Manufactured stacked stone base"
+        widths={[500, 800, 1100]}
+        sizes="(min-width: 700px) 45vw, 100vw"
+        class="block h-full w-full object-cover object-[center_62%]"
+      />
+    </div>
+    <div class="flex flex-col justify-center gap-4 p-[clamp(28px,3.4vw,56px)]">
+      <span class="text-[15px] font-bold text-tan">Existing masonry</span>
+      <h3 class="m-0 font-display text-[clamp(30px,3vw,48px)] leading-none font-extrabold tracking-[-0.02em]">Repairs, restoration and repointing.</h3>
+      <p class="m-0 max-w-[30em] text-lg text-on-dark">Masonry repairs and restoration on brick, block and stone, including repointing.</p>
+      <a href="#quote" class="self-start border-b-2 border-brick pb-1 text-[17px] font-bold text-white no-underline hover:text-tan">Ask about a repair</a>
+    </div>
+  </div>
+</section>

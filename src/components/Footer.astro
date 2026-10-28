@@ -1,0 +1,25 @@
+---
+import { Image } from 'astro:assets';
+import logo from '../assets/logo.png';
+import { BUSINESS } from '../site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="bg-charcoal text-on-dark-2">
+  <!-- Extra bottom padding below 1000px so the mobile Call / Quote bar doesn't cover the footer -->
+  <div class="wrap flex flex-wrap items-center justify-between gap-x-10 gap-y-5 pt-11 pb-[100px] text-[15px] lg:pb-11">
+    <Image src={logo} alt={BUSINESS.name} height={80} densities={[1, 2]} class="block h-20 w-auto" />
+    <div class="flex flex-col gap-1">
+      <span class="font-semibold text-white">{BUSINESS.tagline}</span>
+      <span>© {year} {BUSINESS.name} · {BUSINESS.city}, {BUSINESS.region} · <a href={BUSINESS.phoneHref} class="text-on-dark-2 hover:text-tan">{BUSINESS.phone}</a></span>
+    </div>
+    <a href="https://backpackdigitalmedia.com" target="_blank" rel="noopener" class="text-on-dark-2 hover:text-tan">Powered by Backpack Digital Media</a>
+  </div>
+</footer>
+
+<!-- Sticky bottom bar, phones and tablets only -->
+<div class="fixed inset-x-0 bottom-0 z-[60] grid grid-cols-2 shadow-[0_-6px_24px_rgba(0,0,0,0.25)] lg:hidden">
+  <a href={BUSINESS.phoneHref} class="bg-white p-[18px] text-center text-[17px] font-bold text-charcoal no-underline">Call</a>
+  <a href="#quote" class="bg-brick p-[18px] text-center text-[17px] font-bold text-white no-underline">Get a quote</a>
+</div>

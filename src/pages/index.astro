@@ -1,0 +1,26 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import Build from '../components/Build.astro';
+import Contractors from '../components/Contractors.astro';
+import Work from '../components/Work.astro';
+import ServiceArea from '../components/ServiceArea.astro';
+import Quote from '../components/Quote.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout>
+  <div id="top" class="min-h-screen overflow-x-clip bg-cream text-ink">
+    <Header />
+    <main>
+      <Hero />
+      <Build />
+      <Contractors />
+      <Work />
+      <ServiceArea />
+      <Quote />
+    </main>
+    <Footer />
+  </div>
+</Layout>

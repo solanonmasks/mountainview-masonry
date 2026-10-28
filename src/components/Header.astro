@@ -1,0 +1,30 @@
+---
+import { Image } from 'astro:assets';
+import logo from '../assets/logo.png';
+import { BUSINESS } from '../site';
+
+const links = [
+  { href: '#build', label: 'What we build' },
+  { href: '#trade', label: 'Contractors' },
+  { href: '#work', label: 'Our work' },
+  { href: '#quote', label: 'Contact' },
+];
+---
+
+<header class="sticky top-0 z-50 border-b border-[#2A2A2A] bg-charcoal">
+  <div class="wrap flex h-24 items-center justify-between gap-6">
+    <a href="#top" class="block flex-none">
+      <!-- Logo has dark lettering: only ever place it on a dark background -->
+      <Image src={logo} alt="Mountainview Masonry Ltd. Brick, Block, Stone" height={74} densities={[1, 2]} loading="eager" class="block h-[74px] w-auto" />
+    </a>
+
+    <nav class="hidden gap-[34px] text-base font-semibold lg:flex">
+      {links.map((l) => <a href={l.href} class="text-white no-underline hover:text-tan">{l.label}</a>)}
+    </nav>
+
+    <div class="flex items-center gap-[18px]">
+      <a href={BUSINESS.phoneHref} class="hidden font-display text-lg font-bold whitespace-nowrap text-white no-underline hover:text-tan lg:inline">{BUSINESS.phone}</a>
+      <a href="#quote" class="bg-brick px-5 py-3.5 text-base font-bold whitespace-nowrap text-white no-underline hover:bg-white hover:text-charcoal">Request a quote</a>
+    </div>
+  </div>
+</header>

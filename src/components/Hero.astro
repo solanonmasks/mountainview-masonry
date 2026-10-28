@@ -1,0 +1,46 @@
+---
+import { Image } from 'astro:assets';
+import { BUSINESS, FACTS, photos } from '../site';
+---
+
+<section class="bg-charcoal text-white">
+  <div class="grid lg:min-h-[calc(100vh-96px)] lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]">
+    <div class="edge-pl flex flex-col justify-center gap-7 pt-[clamp(56px,7vw,112px)] pr-[clamp(18px,4vw,64px)] pb-[clamp(48px,6vw,88px)]">
+      <p data-hero style="--i:0" class="m-0 text-[17px] font-semibold text-tan">Masonry subcontractor · Mission, BC</p>
+      <h1 data-hero style="--i:1" class="m-0 font-display text-[clamp(46px,5.6vw,92px)] leading-[0.98] font-extrabold tracking-[-0.03em] text-balance">
+        Brick, block and stone, built to last.
+      </h1>
+      <p data-hero style="--i:2" class="m-0 max-w-[30em] text-[clamp(18px,1.4vw,21px)] leading-[1.55] text-on-dark">
+        Quality masonry for general contractors, builders, developers and project managers across the Lower Mainland and Fraser
+        Valley. Residential and commercial, small projects to large developments.
+      </p>
+      <div data-hero style="--i:3" class="flex flex-wrap gap-3">
+        <a href="#quote" class="bg-brick px-[30px] py-[19px] text-lg font-bold whitespace-nowrap text-white no-underline hover:bg-white hover:text-charcoal">Request a quote</a>
+        <a href={BUSINESS.phoneHref} class="border-2 border-white px-7 py-[17px] text-lg font-bold whitespace-nowrap text-white no-underline hover:bg-white hover:text-charcoal">Call {BUSINESS.phone}</a>
+      </div>
+      <div data-hero style="--i:4" class="mt-[clamp(12px,2vw,28px)] grid grid-cols-3 gap-5 border-t border-[#333] pt-[26px]">
+        {
+          FACTS.map((f) => (
+            <div class="flex flex-col gap-1">
+              <span class="font-display text-[clamp(20px,1.7vw,26px)] leading-[1.1] font-extrabold tracking-[-0.01em]">{f.t}</span>
+              <span class="text-[15px] text-on-dark-2">{f.d}</span>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="relative min-h-[420px] overflow-hidden bg-[#222] lg:min-h-0">
+      <Image
+        src={photos.fireplace}
+        alt="Natural stone fireplace under a vaulted wood ceiling"
+        widths={[600, 900, 1200]}
+        sizes="(min-width: 1000px) 48vw, 100vw"
+        loading="eager"
+        fetchpriority="high"
+        class="hero-img absolute inset-0 block h-full w-full object-cover object-[center_40%]"
+      />
+      <div class="absolute bottom-0 left-0 bg-charcoal px-[22px] py-4 text-[15px] font-semibold text-white">Natural stone fireplace</div>
+    </div>
+  </div>
+</section>

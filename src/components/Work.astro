@@ -1,0 +1,64 @@
+---
+// "Recent work" photo grid. Clicking a photo opens it full size in a lightbox.
+import { Image, getImage } from 'astro:assets';
+import { BUSINESS, WORK } from '../site';
+
+// A larger WebP of each photo for the lightbox.
+const full = await Promise.all(WORK.map((w) => getImage({ src: w.img, width: 1100, format: 'webp' })));
+---
+
+<section id="work" class="wrap section-y">
+  <div data-reveal class="mb-[clamp(36px,4vw,56px)] flex flex-wrap items-end justify-between gap-5">
+    <h2 class="h-section">Recent work</h2>
+    <a href={BUSINESS.instagram} target="_blank" rel="noopener" class="border-b-2 border-brick pb-1 text-[17px] font-bold text-ink no-underline hover:text-brick">Follow on Instagram</a>
+  </div>
+
+  <div class="columns-2 gap-[clamp(14px,1.6vw,24px)] lg:columns-3">
+    {
+      WORK.map((w, i) => (
+        <figure data-reveal class="m-0 mb-[clamp(20px,2.2vw,32px)] flex break-inside-avoid flex-col gap-3">
+          <button
+            type="button"
+            data-lightbox={full[i].src}
+            data-alt={w.t}
+            aria-label={`View larger: ${w.t}`}
+            style={`aspect-ratio:${w.ratio}`}
+            class="group block cursor-zoom-in overflow-hidden border-0 bg-line p-0"
+          >
+            <Image
+              src={w.img}
+              alt={w.t}
+              widths={[400, 600, 800]}
+              sizes="(min-width: 1000px) 31vw, 48vw"
+              style={`object-position:${w.pos}`}
+              class="block h-full w-full object-cover transition-transform duration-[1200ms] ease-mv group-hover:scale-105"
+            />
+          </button>
+          <figcaption class="flex items-baseline justify-between gap-4">
+            <span class="font-display text-[19px] leading-[1.25] font-bold">{w.t}</span>
+            <span class="flex-none text-[15px] font-bold text-brick">{w.k}</span>
+          </figcaption>
+        </figure>
+      ))
+    }
+  </div>
+</section>
+
+<dialog id="lightbox" class="lightbox m-auto max-h-none max-w-none cursor-zoom-out border-0 bg-transparent p-6 outline-none">
+  <img alt="" class="block max-h-[90vh] max-w-[min(94vw,1100px)] object-contain" />
+</dialog>
+
+<script>
+  const dialog = document.getElementById('lightbox') as HTMLDialogElement;
+  const img = dialog.querySelector('img')!;
+
+  document.querySelectorAll<HTMLButtonElement>('[data-lightbox]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      img.src = btn.dataset.lightbox!;
+      img.alt = btn.dataset.alt ?? 'Project photo';
+      dialog.showModal();
+    });
+  });
+  // Click anywhere to close (Esc also works, built into <dialog>)
+  dialog.addEventListener('click', () => dialog.close());
+</script>

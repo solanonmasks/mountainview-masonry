@@ -1,0 +1,128 @@
+---
+// The page shell: <head> tags (title, SEO, fonts, icons) plus the site-wide scripts.
+import '../styles/global.css';
+import { BUSINESS, AREAS } from '../site';
+
+const title = 'Mountainview Masonry Ltd. | Brick, block & stone subcontractor, Mission BC';
+const description =
+  'Masonry subcontractor in Mission, BC. Brick veneer, thin brick, CMU block walls, firewalls and stone veneer for general contractors and builders across the Lower Mainland and Fraser Valley.';
+
+// Social-share image needs a full URL. It only becomes absolute once `site` is set in astro.config.mjs.
+const ogImage = Astro.site ? new URL('/og-image.jpg', Astro.site).href : '/og-image.jpg';
+
+// Structured data so Google understands this is a local business.
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'HomeAndConstructionBusiness',
+  name: BUSINESS.name,
+  description,
+  telephone: '+1-604-889-9042',
+  image: ogImage,
+  ...(Astro.site ? { url: Astro.site.href } : {}),
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: BUSINESS.city,
+    addressRegion: BUSINESS.region,
+    addressCountry: 'CA',
+  },
+  areaServed: AREAS.map((name) => ({ '@type': 'City', name })),
+  sameAs: [BUSINESS.instagram],
+};
+---
+
+<!doctype html>
+<html lang="en-CA">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#151515" />
+
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" href="/favicon-512.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content="en_CA" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Figtree:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body>
+    <slot />
+
+    <script>
+      // Scroll reveal: elements with [data-reveal] fade up as they scroll into view.
+      // Rules from the handoff: content must never stay hidden.
+      //  - Anything already on screen at load is shown straight away.
+      //  - IntersectionObserver + a scroll fallback.
+      //  - After 2.5s, anything still hidden is shown.
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!reduce && 'IntersectionObserver' in window) {
+        const ease = 'cubic-bezier(.16,.84,.3,1)';
+        const els = Array.from(document.querySelectorAll<HTMLElement>('[data-reveal]'));
+
+        const show = (el: HTMLElement, idx = 0) => {
+          if (el.dataset.shown) return;
+          el.dataset.shown = '1';
+          const d = idx * 0.08;
+          el.style.transition = `opacity .9s ${ease} ${d}s, transform .9s ${ease} ${d}s`;
+          el.style.opacity = '1';
+          el.style.transform = 'none';
+          io.unobserve(el);
+        };
+
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((e) => {
+              if (!e.isIntersecting) return;
+              const el = e.target as HTMLElement;
+              // Stagger siblings slightly
+              const sibs = Array.from(el.parentElement?.children ?? []).filter((n) => n.hasAttribute('data-reveal'));
+              show(el, Math.max(0, sibs.indexOf(el)));
+            });
+          },
+          { rootMargin: '0px 0px -8% 0px' },
+        );
+
+        els.forEach((el) => {
+          if (el.getBoundingClientRect().top < window.innerHeight) {
+            el.dataset.shown = '1'; // already visible: leave it alone
+            return;
+          }
+          el.style.opacity = '0';
+          el.style.transform = 'translateY(30px)';
+          io.observe(el);
+        });
+
+        let ticking = false;
+        const onScroll = () => {
+          if (ticking) return;
+          ticking = true;
+          requestAnimationFrame(() => {
+            ticking = false;
+            const limit = window.innerHeight * 0.92;
+            let i = 0;
+            els.forEach((el) => {
+              if (!el.dataset.shown && el.getBoundingClientRect().top < limit) show(el, i++);
+            });
+          });
+        };
+        window.addEventListener('scroll', onScroll, { passive: true });
+
+        setTimeout(() => els.forEach((el) => show(el)), 2500);
+      }
+    </script>
+  </body>
+</html>
